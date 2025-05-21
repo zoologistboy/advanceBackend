@@ -14,6 +14,7 @@ const sendVerificationEmail=(email, userFirstName, token)=>{
         `
     }
 
+    
     transporter.sendMail(options, (err, info)=>{
             if(err){
                 console.log(err.message);
