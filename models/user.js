@@ -30,6 +30,14 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default:false
+    },
+    verificationToken: {
+        type: String
+        
+    },
+    verificationExp: {
+        type: String
+        
     }
 })
 const userModel = mongoose.model("users", userSchema)
