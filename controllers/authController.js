@@ -19,7 +19,7 @@ const signup = async (req, res) => {
 
         const token = generateRandomString(8)
 
-        const verificationExp = Date.now() + 30000
+        const verificationExp = Date.now() + 300000
 
         const user = await userModel.create({...req.body, password:hashpassword, verificationToken:token, verificationExp})
         if(!user){
