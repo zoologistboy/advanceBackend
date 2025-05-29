@@ -3,14 +3,15 @@ const express = require("express")
 // app
 const app = express()
 const cors = require("cors")
-app.use(require("morgan")())
+const morgan = require("morgan")
+app.use(morgan())
 
 
 app.use(cors())
 app.use(express.json())
 
 // connectToDB   
-require("./config/connectDb")
+require("./config/connectDb");
 //connect nodemailer
 require("./services/nodemailer/transporter")
 // listen to port
@@ -26,6 +27,7 @@ const blogPostRouter = require("./routes/blogPostRouter")
 
 const authRouter = require("./routes/authRouter")
 const productRouter = require("./routes/productRouter")
+const errorHandler = require("./middlewares/errorHandler")
 
 
 
@@ -38,4 +40,18 @@ app.use("/api/categories", categoryRouter)
 
 app.use("/api/blog", blogPostRouter)
 
-app.use("/api/product", productRouter)
+app.use("/api/product", productRouter) 
+
+app.all("{*any}", (req, res)=>{
+   res.send(`${req.method} ${req.originalUrl} is not an endpoint on this server`)
+})
+
+app.use(errorHandler)
+
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(err.status || 500).json({
+//         status: "error",
+//         message: err.message || "Internal Server Error"
+//     });
+// });

@@ -6,7 +6,7 @@ const sendVerificationEmail = require("../services/nodemailer/sendVerificationEm
 const generateRandomString = require("../utils/randomString")
 const { verify } = require("../services/nodemailer/transporter")
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
     //encrpt by bcrypt
 
     //generate token
@@ -22,7 +22,7 @@ const signup = async (req, res) => {
         const verificationExp = Date.now() + 300000
 
         const user = await userModel.create({...req.body, password:hashpassword, verificationToken:token, verificationExp})
-        if(!user){
+        if(!user){ 
             return res.status(400).json({
                 status:"error",
                 message:"You can not sign up"
@@ -50,15 +50,16 @@ const signup = async (req, res) => {
         
             
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "error: server error"
-        })
+        console.log(error),
+        next(error)
+        // res.status(500).json({
+        //     message: "error: server error"
+        // })
       
     }
 }
 
-const verifyEmail = async(req, res)=>{
+const verifyEmail = async(req, res, next)=>{
             const {token} = req.params
             try {
                 const user = await userModel.findOne({verificationToken:token})
@@ -80,14 +81,15 @@ const verifyEmail = async(req, res)=>{
                     message:"your email has been successfully verified"
                 })
             } catch (error) { 
-                console.log(error);
+                console.log(error),
+                next(error)
                 
             }
 
         }
 
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const {email, password} = req.body
     try {
         const user = await userModel.findOne({email})
@@ -114,9 +116,10 @@ const login = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            message: "error"
-        })
+        next(error)
+        // res.status(500).json({
+        //     message: "error"
+        // })
         
     }
 }

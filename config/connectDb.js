@@ -14,7 +14,6 @@ const connectToDB = async ()=>{
 
         if (connected) {
             console.log("mongo connected");
-            
         }
     } catch (error) {
         console.log(error);
@@ -23,6 +22,4 @@ const connectToDB = async ()=>{
 }
 
 connectToDB()
-
 module.exports = mongoDbUri
-
