@@ -26,8 +26,18 @@ const allProducts = async(req, res)=>{
     }
 }
 const addProducts = async(req, res)=>{
+    console.log(req.file);
+    
+    if(!req.file){
+        return res.status(400).jason({
+            message: "No file was found!"
+        })
+    }
+
+    const image = req.file.path
+
     try {
-        const product = await productModel.create({...req.body, user:req.user_id})//(.../req.body, seller: req.user_id)
+        const product = await productModel.create({...req.body, user:req.user_id, image: image})//(.../req.body, seller: req.user_id)
         if (!product) {
           return res.status(400).json({
             status: "error",

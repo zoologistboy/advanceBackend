@@ -4,11 +4,13 @@ const isLoggedIn = require("../middlewares/isLoggedIn")
 const isSeller = require("../middlewares/isSeller")
 const isVerifed = require("../middlewares/isVerified")
 const upload = require("../middlewares/upload")
+const productImage = require("../config/multer")
+
 
 const productRouter = express.Router()
 
 
-productRouter.post("/", isLoggedIn, isVerifed, isSeller, upload, addProducts)
+productRouter.post("/", isLoggedIn, isVerifed, isSeller, upload, productImage.single("productImage"), addProducts)
 
 productRouter.get("/", allProducts)
 
